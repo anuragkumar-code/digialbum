@@ -5,7 +5,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import HomePage from './pages/HomePage';
 import AlbumForm from './components/AlbumForm';
-import Album from './components/Album';
+import Album from './pages/Album';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

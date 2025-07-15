@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HeaderNav from '../components/Homepage/HeaderNav';
+import AlbumGrid from '../components/Homepage/AlbumGrid';
 
 const albums = [
   { id: 1, name: "Summer Escapes", photoCount: 25, date: "July 2025", src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", height: 300 },
@@ -26,38 +27,12 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-secondary-light-mint flex flex-col">
       <Navbar />
-
-      <div className="pt-20 bg-secondary-light-mint">
+      <div className="pt-[4rem] bg-secondary-light-mint">
         <HeaderNav />
       </div>
 
-      <main className="flex-grow pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-          {albums.map((album) => (
-            <Link
-              key={album.id}
-              to={`/albums/${album.id}`}
-              className="album-tile block w-full break-inside-avoid relative group overflow-hidden rounded-lg shadow-md"
-              style={{ height: `${album.height}px` }}
-              aria-label={`View ${album.name} album`}
-            >
-              <img
-                src={album.src}
-                alt={album.name}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-4 text-secondary-light-mint">
-                <h2 className="text-xl font-merriweather font-bold mb-1 group-hover:animate-zoom">
-                  {album.name}
-                </h2>
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-poppins text-text-dark-teal">
-                  <p>{album.photoCount} Photos</p>
-                  <p>{album.date}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+      <main className="flex-grow pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <AlbumGrid albums={albums} />
       </main>
 
       <Footer className="w-full mt-auto" />
