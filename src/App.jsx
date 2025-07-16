@@ -1,11 +1,20 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
 import { AuthProvider } from './context/AuthContext';
+
 import PrivateRoute from './components/PrivateRoute';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+
 import HomePage from './pages/HomePage';
-import AlbumForm from './components/AlbumForm';
+import CreateAlbum from './pages/CreateAlbum';
 import Album from './pages/Album';
+
+import About from './pages/About';
+import Contact from './pages/Contact';
+import JoinUs from './pages/JoinUs';
+
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,8 +32,13 @@ const App = () => {
             <Route path="/albums/:id" element={<PrivateRoute><Album /></PrivateRoute>} /> */}
 
             <Route path="/homepage" element={<HomePage />} />
-            <Route path="/albums/new" element={<AlbumForm />} />
-            <Route path="/albums/:id" element={<Album />} />
+            <Route path="/add-album" element={<CreateAlbum />} />
+            <Route path="/album/:id" element={<Album />} />
+
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/join-us" element={<JoinUs />} />
+
 
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>

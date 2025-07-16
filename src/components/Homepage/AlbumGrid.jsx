@@ -8,7 +8,7 @@ const AlbumGrid = ({ albums }) => {
       {albums.map((album) => (
         <Link
           key={album.id}
-          to={`/albums/${album.id}`}
+          to={`/album/${album.id}`}
           className="album-tile block w-full break-inside-avoid relative group overflow-hidden rounded-lg shadow-md"
           style={{ height: `${album.height}px` }}
           aria-label={`View ${album.name} album`}

@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const HeaderNav = () => {
+  const location = useLocation();
+  const isAddAlbumPage = location.pathname === '/add-album';
+
   return (
     <nav className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
       <div className="flex space-x-6">
@@ -16,12 +19,14 @@ const HeaderNav = () => {
         </Link>
       </div>
 
-      <Link
-        to="/add-album"
-        className="bg-primary-sea-green text-secondary-light-mint px-4 py-2 rounded-lg hover:bg-hover-forest-green transition whitespace-nowrap"
-      >
-        <i className="fas fa-plus mr-2"></i> Add Album
-      </Link>
+      {!isAddAlbumPage && (
+        <Link
+          to="/add-album"
+          className="bg-primary-sea-green text-secondary-light-mint px-4 py-2 rounded-lg hover:bg-hover-forest-green transition whitespace-nowrap"
+        >
+          <i className="fas fa-plus mr-2"></i> Add Album
+        </Link>
+      )}
     </nav>
   );
 };
