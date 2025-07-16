@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import Navbar from "../components/Shared/Navbar";
+import Footer from "../components/Shared/Footer";
+import HeaderNav from "../components/Shared/HeaderNav";
+
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import Download from "yet-another-react-lightbox/plugins/download";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 const Album = () => {
   const { id } = useParams();
@@ -26,14 +34,21 @@ const Album = () => {
     { id: 15, name: "Starry Skies", photoCount: 25, date: "May 2024" },
   ];
 
+
   const album = albums.find((a) => a.id === parseInt(id));
   const imageUrls = [
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1523438885200-7d3b7c10201f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1523438885200-7d3b7c10201f?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
   ];
+
+  const slides = imageUrls.map((src, index) => ({
+    src,
+    download: src,
+    description: `Photo ${index + 1} - ${album?.name} (${album?.date})`,
+  }));
 
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -43,9 +58,7 @@ const Album = () => {
 
   const toggleLike = (index) => {
     setLikedPhotos((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
 
@@ -53,7 +66,11 @@ const Album = () => {
     <div className="min-h-screen bg-secondary-light-mint flex flex-col">
       <Navbar />
 
-      <main className="flex-grow pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="pt-[4rem] bg-secondary-light-mint">
+        <HeaderNav />
+      </div>
+
+      <main className="flex-grow pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-merriweather text-primary-sea-green">
             {album.name}
@@ -75,45 +92,33 @@ const Album = () => {
             >
               <img
                 src={src}
-                alt={`Photo ${index + 1}`}
+                alt={`Album image ${index + 1}`}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           ))}
         </div>
 
-        {isOpen && (
-          <Lightbox
-            mainSrc={imageUrls[photoIndex]}
-            nextSrc={imageUrls[(photoIndex + 1) % imageUrls.length]}
-            prevSrc={imageUrls[(photoIndex + imageUrls.length - 1) % imageUrls.length]}
-            onCloseRequest={() => setIsOpen(false)}
-            onMovePrevRequest={() => setPhotoIndex((photoIndex + imageUrls.length - 1) % imageUrls.length)}
-            onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % imageUrls.length)}
-            imageTitle={album.name}
-            imageCaption={`Date: ${album.date}`}
-            toolbarButtons={[
-              <a
-                key="download"
-                href={imageUrls[photoIndex]}
-                download
-                className="text-white text-sm bg-black bg-opacity-40 px-3 py-1 rounded hover:bg-opacity-60"
-              >
-                Download
-              </a>,
+        <Lightbox
+          open={isOpen}
+          close={() => setIsOpen(false)}
+          index={photoIndex}
+          slides={slides}
+          plugins={[Captions, Download, Thumbnails]}
+          on={{
+            view: ({ index }) => setPhotoIndex(index),
+          }}
+          render={{
+            button: ({ index }) => (
               <button
-                key="like"
-                onClick={() => toggleLike(photoIndex)}
-                className="text-white text-lg px-3 py-1 bg-black bg-opacity-40 rounded hover:bg-opacity-60"
+                onClick={() => toggleLike(index)}
+                className="text-white text-lg px-3 py-1 bg-black bg-opacity-60 rounded absolute bottom-4 left-4 hover:bg-opacity-80"
               >
-                {likedPhotos.includes(photoIndex) ? '❤️' : '🤍'}
+                {likedPhotos.includes(index) ? "❤️" : "🤍"}
               </button>
-            ]}
-          />
-        )}
-        <p className="text-center mt-4 text-gray-500 text-sm">
-          Tip: Use ← → keys to navigate
-        </p>
+            ),
+          }}
+        />
       </main>
 
       <Footer className="w-full mt-auto" />

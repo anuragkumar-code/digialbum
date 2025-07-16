@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import HeaderNav from '../components/Homepage/HeaderNav';
+import Navbar from '../components/Shared/Navbar';
+import Footer from '../components/Shared/Footer';
+import HeaderNav from '../components/Shared/HeaderNav';
 import AlbumGrid from '../components/Homepage/AlbumGrid';
 
 const albums = [
